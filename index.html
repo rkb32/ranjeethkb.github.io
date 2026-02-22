@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjeeth Burujula — AI & ML Engineer</title>
+    <title>Ranjeeth Burujula Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -27,7 +28,6 @@
             background: var(--bg);
             color: var(--primary);
             overflow-x: hidden;
-            cursor: none;
         }
 
         /* FAST Cursor - NO LAG */
@@ -65,7 +65,7 @@
             right: 0;
             padding: 2rem 3rem;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             z-index: 1000;
             background: rgba(250, 250, 250, 0);
@@ -1520,7 +1520,22 @@
             .contact-links {
                 flex-direction: column;
             }
-        }
+            .draggable-item {
+                position: absolute;
+                width: 200px;
+                height: 200px;
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(255, 59, 59, 0.2));
+                border-radius: 50%;
+                backdrop-filter: blur(20px);
+                pointer-events: none;
+                will-change: transform;
+                transition: transform 0.1s ease-out;
+            }
+        
+            .draggable-item:nth-child(1) { top: 20%; left: 10%; }
+            .draggable-item:nth-child(2) { top: 60%; right: 15%; }
+            .draggable-item:nth-child(3) { bottom: 20%; left: 30%; }
+            }
     </style>
 </head>
 <body>
@@ -1530,21 +1545,11 @@
 
     <!-- Navigation -->
     <nav id="nav">
+        <div class="logo">Ranjeeth Burujula</div>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#projects">Work</a></li>
             <li><a href="#tech">Tech</a></li>
-            <li class="nav-item-dropdown">
-                <a class="dropdown-toggle">CONNECT ↓</a>
-                <div class="dropdown-menu">
-                    <a href="https://www.linkedin.com/in/ranjeeth-kb1341" target="_blank">↗ LinkedIn</a>
-                    <a href="https://github.com/rkb32" target="_blank">↗ GitHub</a>
-                    <div class="dropdown-email">
-                        <span class="email-text">ranjeeth.kb@Outlook.com</span>
-                        <button class="copy-btn" onclick="copyEmail()">Copy</button>
-                    </div>
-                </div>
-            </li>
         </ul>
     </nav>
 
@@ -1554,7 +1559,7 @@
             <div class="hero-left">
                 <div class="available-badge">
                     <span class="status-dot"></span>
-                    Open to Opportunities 
+                    Open to Opportunities
                 </div>
                 
                 <h1 class="hero-name">Ranjeeth Burujula</h1>
@@ -1572,7 +1577,7 @@
                         <span>LinkedIn ↗</span>
                     </a>
                     <div class="social-link email-copy">
-                        <span id="hero-email">ranjeeth.kb@Outlook.com</span>
+                        <span id="hero-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="374556595d5252435f195c55777842435b58585c1954585a">[email&#160;protected]</a></span>
                         <button onclick="copyHeroEmail()" class="copy-btn-small">Copy</button>
                     </div>
                 </div>
@@ -1872,7 +1877,7 @@
             <span class="marquee-text">Full Stack Developer</span>
             <span class="marquee-text">•</span>
         </div>
-    </section>
+    </div>
 
 
     <!-- Footer -->
@@ -1895,7 +1900,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
        // FAST Cursor - NO LAG
         const cursor = document.querySelector('.cursor');
         const cursorFollower = document.querySelector('.cursor-follower');
@@ -1975,7 +1980,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 dropdownMenu.classList.toggle('active');
-                const contact = document.querySelector('.contact-section');
+                const contact = document.querySelector('#contact');
                 if (contact) contact.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         
@@ -1986,17 +1991,59 @@
             });
         }
         
-        // Copy Email (dropdown)
+        // Copy Email
         function copyEmail() {
-            const email = 'ranjeeth.kb@Outlook.com';
+            const email = 'your@email.com'; // CHANGE THIS TO YOUR REAL EMAIL
             navigator.clipboard.writeText(email).then(() => {
-                const copyBtn = document.querySelector('.dropdown-menu .copy-btn');
-                if (copyBtn) {
-                    copyBtn.textContent = 'Copied! ✓';
-                    setTimeout(() => copyBtn.textContent = 'Copy', 2000);
-                }
+                const btn = document.getElementById('copy-btn');
+                const copyBtn = document.querySelector('.copy-btn');
+                if (btn) { btn.textContent = 'Copied! ✓'; setTimeout(() => btn.textContent = 'Copy', 2000); }
+                if (copyBtn) { copyBtn.textContent = 'Copied! ✓'; setTimeout(() => copyBtn.textContent = 'Copy', 2000); }
             });
         }
+
+        // 3D Mouse-following draggable items
+        const draggableItems = document.querySelectorAll('.draggable-item');
+        let mouseX = 0;
+        let mouseY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function animate() {
+            draggableItems.forEach((item, index) => {
+                const speed = parseFloat(item.getAttribute('data-speed'));
+                const rect = item.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // Calculate distance from mouse
+                const deltaX = (mouseX - centerX) * speed * 0.05;
+                const deltaY = (mouseY - centerY) * speed * 0.05;
+                
+                // Calculate rotation based on mouse position
+                const rotateX = ((mouseY - centerY) / window.innerHeight) * 20;
+                const rotateY = ((mouseX - centerX) / window.innerWidth) * 20;
+                const skew = ((mouseX - centerX) / window.innerWidth) * 2;
+                
+                item.style.transform = `
+                    perspective(1000px) 
+                    translate(${deltaX}px, ${deltaY}px) 
+                    scaleX(0.998) 
+                    scaleY(0.998) 
+                    skew(${skew}deg) 
+                    rotate(${rotateX}deg) 
+                    rotateY(${rotateY}deg) 
+                    rotateX(${rotateX * 0.5}deg)
+                `;
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
 
         // Copy email in hero
         function copyHeroEmail() {
@@ -2048,483 +2095,286 @@
         });
 
         // ========================================
-        // 🎯 PRO MULTI-STAGE ANIMATION SYSTEM
-        // Offscreen Canvas + WebGL + GSAP + Force Simulation
+        // THREE.JS PRO HERO ANIMATION - 60FPS
         // ========================================
         
         const canvas = document.getElementById('heroCanvas');
-        if (!canvas) return;
-        
-        // Setup 2D Canvas (optimized for performance)
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        
-        function resizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        // State (scroll read in rAF to avoid main-thread blocking and jitter)
-        let mouseX = 0, mouseY = 0, scrollProgress = 0, scrollProgressTarget = 0, time = 0;
-        const stage = { current: 1, progress: 0 };
-        const SMOOTH = 0.08; // lerp factor for scroll (higher = snappier, lower = smoother)
-        
-        // Mouse tracking
-        window.addEventListener('mousemove', (e) => {
-            const r = canvas.getBoundingClientRect();
-            mouseX = (e.clientX - r.left) / r.width;
-            mouseY = (e.clientY - r.top) / r.height;
-        }, { passive: true });
-        
-        // ========================================
-        // STAGE 1: TERMINAL WITH SYNTAX HIGHLIGHTING
-        // ========================================
-        const terminalCode = [
-            { text: 'import', type: 'keyword', color: '#4A9EFF' },
-            { text: ' torch', type: 'text', color: '#E8E8E8' },
-            { text: '\nmodel = ', type: 'text', color: '#E8E8E8' },
-            { text: 'NeuralNetwork', type: 'class', color: '#FFD700' },
-            { text: '()', type: 'text', color: '#E8E8E8' },
-            { text: '\nprint', type: 'function', color: '#43E97B' },
-            { text: '(', type: 'text', color: '#E8E8E8' },
-            { text: '"Hello AI"', type: 'string', color: '#FF6B9D' },
-            { text: ')', type: 'text', color: '#E8E8E8' }
-        ];
-        let typingIndex = 0;
-        let cursorVisible = true;
-        
-        function drawTerminal(ctx) {
-            if (stage.current !== 1) return;
-            const alpha = 1 - stage.progress;
-            if (alpha <= 0) return;
+        if (canvas && typeof THREE !== 'undefined') {
             
-            const rect = canvas.getBoundingClientRect();
-            ctx.save();
-            ctx.globalAlpha = alpha;
+            // Scene setup
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            camera.position.z = 5;
             
-            // Terminal background
-            ctx.fillStyle = '#1E1E1E';
-            ctx.fillRect(20, 20, rect.width - 40, 200);
-            
-            // Terminal buttons
-            ctx.fillStyle = '#FF5F56';
-            ctx.beginPath();
-            ctx.arc(40, 40, 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#FFBD2E';
-            ctx.beginPath();
-            ctx.arc(60, 40, 6, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.fillStyle = '#27C93F';
-            ctx.beginPath();
-            ctx.arc(80, 40, 6, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Code with syntax highlighting
-            let x = 40, y = 80;
-            ctx.font = '14px "Courier New", monospace';
-            for (let i = 0; i < Math.min(typingIndex, terminalCode.length); i++) {
-                const token = terminalCode[i];
-                ctx.fillStyle = token.color;
-                ctx.fillText(token.text, x, y);
-                x += ctx.measureText(token.text).width;
-                if (token.text.includes('\n')) {
-                    x = 40;
-                    y += 20;
-                }
-            }
-            
-            // Blinking cursor with glow
-            if (cursorVisible) {
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#43E97B';
-                ctx.fillStyle = '#43E97B';
-                ctx.fillRect(x, y - 14, 2, 16);
-                ctx.shadowBlur = 0;
-            }
-            
-            // 2.5D tilt: use CSS variable updated at most 60fps, avoid layout thrash
-            const tiltX = (mouseX - 0.5) * 10;
-            const tiltY = (mouseY - 0.5) * 10;
-            canvas.style.transform = `perspective(1000px) rotateX(${tiltY}deg) rotateY(${tiltX}deg)`;
-            ctx.restore();
-        }
-        
-        // ========================================
-        // STAGE 2: CHROMATIC GLITCH + PARTICLE EXPLOSION (GPU-friendly, batched)
-        // ========================================
-        const PARTICLE_COUNT = 60;
-        const particles = [];
-        let particlesInitialized = false;
-        let lastStage = 0;
-        
-        function initParticlesOnce(rect) {
-            if (particlesInitialized && particles.length >= PARTICLE_COUNT) return;
-            particles.length = 0;
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                particles.push({
-                    x: rect.width / 2,
-                    y: rect.height / 2,
-                    z: Math.random() * 2 - 1,
-                    vx: (Math.random() - 0.5) * 8,
-                    vy: (Math.random() - 0.5) * 8,
-                    vz: (Math.random() - 0.5) * 0.1,
-                    color: ['#667eea', '#764ba2', '#FF3B3B'][Math.floor(Math.random() * 3)],
-                    life: 1
-                });
-            }
-            particlesInitialized = true;
-        }
-        
-        function drawGlitchParticles(ctx) {
-            if (stage.current !== 2) {
-                if (lastStage === 2) particlesInitialized = false;
-                return;
-            }
-            lastStage = 2;
-            const alpha = Math.min(1, stage.progress * 2) * (1 - Math.max(0, (stage.progress - 0.5) * 2));
-            if (alpha <= 0) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            initParticlesOnce(rect);
-            
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            
-            // Chromatic aberration: low-frequency (no 20Hz) to avoid FPS hit
-            const offset = Math.sin(time * 4) * 2;
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.15)';
-            ctx.fillRect(20 + offset, 20, rect.width - 40, rect.height - 40);
-            ctx.fillStyle = 'rgba(0, 255, 255, 0.15)';
-            ctx.fillRect(20 - offset, 20, rect.width - 40, rect.height - 40);
-            
-            // Update positions (no DOM, pure math)
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-                p.z += p.vz;
-                p.life -= 0.008;
-            }
-            
-            // Batch by color (one fillStyle per color, then one path per particle)
-            const colors = ['#667eea', '#764ba2', '#FF3B3B'];
-            for (let c = 0; c < colors.length; c++) {
-                ctx.fillStyle = colors[c];
-                for (let i = 0; i < particles.length; i++) {
-                    const p = particles[i];
-                    if (p.life <= 0) continue;
-                    if (p.color !== colors[c]) continue;
-                    const scale = 1 + p.z * 0.5;
-                    const size = 4 * scale;
-                    ctx.globalAlpha = alpha * p.life;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-            ctx.globalAlpha = 1;
-            
-            ctx.restore();
-        }
-        
-        // ========================================
-        // STAGE 3: FORCE-DIRECTED NEURAL NETWORK
-        // ========================================
-        const nodeCount = 15;
-        const networkNodes = [];
-        const networkLinks = [];
-        
-        // Initialize nodes (will be positioned on first draw)
-        function initNetworkNodes() {
-            if (networkNodes.length > 0) return;
-            const rect = canvas.getBoundingClientRect();
-            for (let i = 0; i < nodeCount; i++) {
-                networkNodes.push({
-                    x: Math.random() * rect.width,
-                    y: Math.random() * rect.height,
-                    vx: 0,
-                    vy: 0,
-                    radius: 8,
-                    pulse: Math.random() * Math.PI * 2,
-                    hovered: false
+            const renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                alpha: true,
+                antialias: true 
             });
+            renderer.setSize(500, 500);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            let mouseX = 0;
+            let mouseY = 0;
+            let scrollProgress = 0;
+            
+            // Mouse tracking (throttled)
+            let mouseThrottle = false;
+            canvas.addEventListener('mousemove', (e) => {
+                if (mouseThrottle) return;
+                mouseThrottle = true;
+                setTimeout(() => mouseThrottle = false, 16);
+                
+                const rect = canvas.getBoundingClientRect();
+                mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            });
+            
+            // Scroll tracking
+            window.addEventListener('scroll', () => {
+                const heroSection = document.querySelector('.hero');
+                if (heroSection) {
+                    const heroRect = heroSection.getBoundingClientRect();
+                    scrollProgress = Math.max(0, Math.min(1, -heroRect.top / (heroRect.height * 0.8)));
+                }
+            });
+            
+            // ========================================
+            // STAGE 1: TERMINAL (Using Sprites)
+            // ========================================
+            const terminalGroup = new THREE.Group();
+            
+            // Terminal background plane
+            const terminalGeometry = new THREE.PlaneGeometry(4, 2.5);
+            const terminalMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x1E1E1E,
+                transparent: true,
+                opacity: 1
+            });
+            const terminalPlane = new THREE.Mesh(terminalGeometry, terminalMaterial);
+            terminalGroup.add(terminalPlane);
+            
+            // Add colored dots (terminal buttons)
+            const dotGeometry = new THREE.CircleGeometry(0.08, 16);
+            const redDot = new THREE.Mesh(dotGeometry, new THREE.MeshBasicMaterial({ color: 0xFF5F56 }));
+            redDot.position.set(-1.7, 1, 0.01);
+            terminalGroup.add(redDot);
+            
+            const yellowDot = new THREE.Mesh(dotGeometry, new THREE.MeshBasicMaterial({ color: 0xFFBD2E }));
+            yellowDot.position.set(-1.5, 1, 0.01);
+            terminalGroup.add(yellowDot);
+            
+            const greenDot = new THREE.Mesh(dotGeometry, new THREE.MeshBasicMaterial({ color: 0x27C93F }));
+            greenDot.position.set(-1.3, 1, 0.01);
+            terminalGroup.add(greenDot);
+            
+            scene.add(terminalGroup);
+            
+            // ========================================
+            // STAGE 2: PARTICLES (GPU Particles)
+            // ========================================
+            const particleCount = 500;
+            const particlesGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const velocities = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = (Math.random() - 0.5) * 8;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 2;
+                
+                velocities[i * 3] = (Math.random() - 0.5) * 0.02;
+                velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
+                velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.01;
+                
+                const color = [0x667eea, 0x764ba2, 0xFF3B3B][Math.floor(Math.random() * 3)];
+                colors[i * 3] = ((color >> 16) & 255) / 255;
+                colors[i * 3 + 1] = ((color >> 8) & 255) / 255;
+                colors[i * 3 + 2] = (color & 255) / 255;
             }
-        }
-        
-        function drawNeuralNetwork(ctx) {
-            if (stage.current !== 3) return;
-            const alpha = Math.min(1, stage.progress * 2);
-            if (alpha <= 0) return;
             
-            initNetworkNodes();
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
             
-            // Create links on first draw
-            if (networkLinks.length === 0) {
-                for (let i = 0; i < networkNodes.length; i++) {
-                    for (let j = i + 1; j < networkNodes.length; j++) {
-                        const dx = networkNodes[i].x - networkNodes[j].x;
-                        const dy = networkNodes[i].y - networkNodes[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 150) {
-                            networkLinks.push({
-                                source: i,
-                                target: j,
-                                pulse: Math.random() * Math.PI * 2
-                            });
-                        }
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0,
+                blending: THREE.AdditiveBlending
+            });
+            
+            const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particleSystem);
+            
+            // ========================================
+            // STAGE 3: NEURAL NETWORK (Instanced Meshes)
+            // ========================================
+            const nodeCount = 15;
+            const nodeGeometry = new THREE.SphereGeometry(0.08, 16, 16);
+            const nodeMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x667eea,
+                transparent: true,
+                opacity: 0
+            });
+            
+            const nodes = [];
+            const nodeVelocities = [];
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const node = new THREE.Mesh(nodeGeometry, nodeMaterial.clone());
+                node.position.set(
+                    (Math.random() - 0.5) * 6,
+                    (Math.random() - 0.5) * 6,
+                    0
+                );
+                nodes.push(node);
+                nodeVelocities.push(new THREE.Vector3());
+                scene.add(node);
+            }
+            
+            // Network connections (lines)
+            const lineMaterial = new THREE.LineBasicMaterial({ 
+                color: 0x667eea,
+                transparent: true,
+                opacity: 0
+            });
+            const lines = [];
+            
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dist = nodes[i].position.distanceTo(nodes[j].position);
+                    if (dist < 2) {
+                        const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+                            nodes[i].position,
+                            nodes[j].position
+                        ]);
+                        const line = new THREE.Line(lineGeometry, lineMaterial.clone());
+                        lines.push({ line, nodeA: i, nodeB: j, pulse: Math.random() * Math.PI * 2 });
+                        scene.add(line);
                     }
                 }
             }
+    
+            // ========================================
+            // ANIMATION LOOP (60FPS GPU-ACCELERATED)
+            // ========================================
+            let time = 0;
+            let glitchTime = 0;
             
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            
-            const rect = canvas.getBoundingClientRect();
-            const mouseCanvasX = mouseX * rect.width;
-            const mouseCanvasY = mouseY * rect.height;
-            
-            // Force simulation: nodes repel from mouse
-            networkNodes.forEach(node => {
-                const dx = node.x - mouseCanvasX;
-                const dy = node.y - mouseCanvasY;
-                const dist = Math.sqrt(dx * dx + dy * dy);
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.016;
                 
-                if (dist < 100) {
-                    node.vx += (dx / dist) * 2;
-                    node.vy += (dy / dist) * 2;
+                // Camera slight tilt based on mouse (2.5D effect)
+                camera.position.x = mouseX * 0.3;
+                camera.position.y = mouseY * 0.3;
+                camera.lookAt(0, 0, 0);
+                
+                // STAGE 1: Terminal (0-20% scroll)
+                if (scrollProgress < 0.2) {
+                    terminalGroup.material = terminalMaterial;
+                    terminalMaterial.opacity = 1 - (scrollProgress / 0.2);
+                    
+                    // Typing cursor blink
+                    terminalPlane.rotation.z = Math.sin(time * 3) * 0.01;
+                    
+                } else {
+                    terminalMaterial.opacity = 0;
                 }
                 
-                // Apply velocity with friction
-                node.x += node.vx;
-                node.y += node.vy;
-                node.vx *= 0.9;
-                node.vy *= 0.9;
-                
-                // Bounds
-                const rect = canvas.getBoundingClientRect();
-                node.x = Math.max(50, Math.min(rect.width - 50, node.x));
-                node.y = Math.max(50, Math.min(rect.height - 50, node.y));
-                
-                // Check hover
-                node.hovered = dist < 30;
-            });
-            
-            // Draw connections with data pulses
-            ctx.strokeStyle = 'rgba(102, 126, 234, 0.3)';
-            ctx.lineWidth = 2;
-            networkLinks.forEach(link => {
-                link.pulse += 0.05;
-                const source = networkNodes[link.source];
-                const target = networkNodes[link.target];
-                
-                ctx.beginPath();
-                ctx.moveTo(source.x, source.y);
-                ctx.lineTo(target.x, target.y);
-                ctx.stroke();
-                
-                // Pulse along connection
-                const pulsePos = (Math.sin(link.pulse) + 1) / 2;
-                const px = source.x + (target.x - source.x) * pulsePos;
-                const py = source.y + (target.y - source.y) * pulsePos;
-                ctx.fillStyle = '#FF3B3B';
-                ctx.beginPath();
-                ctx.arc(px, py, 4, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            
-            // Draw nodes with ripple effect on hover
-            networkNodes.forEach(node => {
-                node.pulse += 0.1;
-                const dist = Math.sqrt((node.x - mouseCanvasX) ** 2 + (node.y - mouseCanvasY) ** 2);
-                
-                if (node.hovered) {
-                    // Ripple effect
-                    ctx.strokeStyle = 'rgba(255, 59, 59, 0.5)';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.arc(node.x, node.y, node.radius + Math.sin(node.pulse) * 10, 0, Math.PI * 2);
-                    ctx.stroke();
+                // STAGE 2: Particles (10-40% scroll)
+                if (scrollProgress > 0.1 && scrollProgress < 0.4) {
+                    const particleOpacity = Math.min(1, (scrollProgress - 0.1) / 0.1);
+                    particlesMaterial.opacity = particleOpacity * (1 - ((scrollProgress - 0.3) / 0.1));
+                    
+                    // Update particle positions (force-directed from mouse)
+                    const positions = particlesGeometry.attributes.position.array;
+                    for (let i = 0; i < particleCount; i++) {
+                        const x = positions[i * 3];
+                        const y = positions[i * 3 + 1];
+                        
+                        const dx = x - mouseX * 4;
+                        const dy = y - mouseY * 4;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (dist < 2) {
+                            velocities[i * 3] += (dx / dist) * 0.001;
+                            velocities[i * 3 + 1] += (dy / dist) * 0.001;
+                        }
+                        
+                        positions[i * 3] += velocities[i * 3];
+                        positions[i * 3 + 1] += velocities[i * 3 + 1];
+                        positions[i * 3 + 2] += velocities[i * 3 + 2];
+                        
+                        velocities[i * 3] *= 0.98;
+                        velocities[i * 3 + 1] *= 0.98;
+                    }
+                    particlesGeometry.attributes.position.needsUpdate = true;
+                    
+                } else {
+                    particlesMaterial.opacity = 0;
                 }
                 
-                ctx.fillStyle = node.hovered ? '#FF3B3B' : '#667eea';
-                ctx.beginPath();
-                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            
-            ctx.restore();
-        }
-        
-        // ========================================
-        // STAGE 4: SVG MORPHING TRANSITION
-        // ========================================
-        const techLogos = ['🐍', '⚛️', '🔥', '📘', '🟢'];
-        const logoPositions = [];
-        function initLogos() {
-            if (logoPositions.length > 0) return;
-            const rect = canvas.getBoundingClientRect();
-            for (let i = 0; i < techLogos.length; i++) {
-                logoPositions.push({
-                    x: (rect.width / (techLogos.length + 1)) * (i + 1),
-                    y: rect.height / 2,
-                    targetX: (rect.width / (techLogos.length + 1)) * (i + 1),
-                    targetY: rect.height / 2,
-                    scale: 0,
-                    rotation: 0
-                });
-            }
-        }
-        
-        function drawMorphTransition(ctx) {
-            if (stage.current !== 4) return;
-            const alpha = Math.min(1, stage.progress * 2);
-            if (alpha <= 0) return;
-            
-            initLogos();
-            
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            ctx.font = '48px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            // Morph nodes into logos: run GSAP only ONCE per logo (prevents tween spam / hang)
-            logoPositions.forEach((logo, i) => {
-                if (!logo._gsapDone && typeof gsap !== 'undefined') {
-                    logo._gsapDone = true;
-                    gsap.to(logo, {
-                        scale: 1,
-                        rotation: 360,
-                        duration: 1,
-                        ease: 'back.out(1.7)'
+                // STAGE 3: Neural Network (35-70% scroll)
+                if (scrollProgress > 0.35 && scrollProgress < 0.7) {
+                    const networkOpacity = Math.min(1, (scrollProgress - 0.35) / 0.1);
+                    
+                    nodes.forEach((node, i) => {
+                        node.material.opacity = networkOpacity;
+                        
+                        // Force-directed from mouse
+                        const mousePos = new THREE.Vector3(mouseX * 4, mouseY * 4, 0);
+                        const dir = node.position.clone().sub(mousePos);
+                        const dist = dir.length();
+                        
+                        if (dist < 2) {
+                            nodeVelocities[i].add(dir.normalize().multiplyScalar(0.02));
+                        }
+                        
+                        node.position.add(nodeVelocities[i]);
+                        nodeVelocities[i].multiplyScalar(0.95);
+                        
+                        // Bounds
+                        node.position.x = Math.max(-3, Math.min(3, node.position.x));
+                        node.position.y = Math.max(-3, Math.min(3, node.position.y));
+                        
+                        // Hover glow
+                        const nodeDist = new THREE.Vector2(node.position.x - mouseX * 4, node.position.y - mouseY * 4).length();
+                        node.material.color.setHex(nodeDist < 0.5 ? 0xFF3B3B : 0x667eea);
                     });
-                } else if (logo.scale < 1) {
-                    logo.scale = Math.min(1, logo.scale + 0.03);
-                    logo.rotation += 8;
+                    
+                    // Update lines and pulses
+                    lines.forEach(conn => {
+                        conn.line.material.opacity = networkOpacity * 0.3;
+                        conn.pulse += 0.05;
+                        
+                        const nodeA = nodes[conn.nodeA].position;
+                        const nodeB = nodes[conn.nodeB].position;
+                        conn.line.geometry.setFromPoints([nodeA, nodeB]);
+                        conn.line.geometry.attributes.position.needsUpdate = true;
+                    });
+                    
+                } else {
+                    nodes.forEach(node => node.material.opacity = 0);
+                    lines.forEach(conn => conn.line.material.opacity = 0);
                 }
                 
-                ctx.save();
-                ctx.translate(logo.x, logo.y);
-                ctx.scale(logo.scale, logo.scale);
-                ctx.rotate(logo.rotation * Math.PI / 180);
-                ctx.fillText(techLogos[i], 0, 0);
-                ctx.restore();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Resize handler
+            window.addEventListener('resize', () => {
+                const rect = canvas.getBoundingClientRect();
+                renderer.setSize(rect.width, rect.height);
+                camera.aspect = rect.width / rect.height;
+                camera.updateProjectionMatrix();
             });
-            
-            ctx.restore();
         }
-        
-        // ========================================
-        // STAGE 5: PARALLAX FINAL STATE
-        // ========================================
-        const floatingIcons = [];
-        function initFloatingIcons() {
-            if (floatingIcons.length > 0) return;
-            const rect = canvas.getBoundingClientRect();
-            for (let i = 0; i < 10; i++) {
-                floatingIcons.push({
-                    x: Math.random() * rect.width,
-                    y: Math.random() * rect.height,
-                    icon: ['🐍', '⚛️', '🔥', '📘', '🟢', '👁️', '🐳', '🗄️', '🍃', '☁️'][i],
-                    bobPhase: Math.random() * Math.PI * 2,
-                    scrollOffset: Math.random() * 100
-                });
-            }
-        }
-        
-        function drawParallaxFinal(ctx) {
-            if (stage.current !== 5) return;
-            const alpha = Math.min(1, stage.progress * 2);
-            if (alpha <= 0) return;
-            
-            initFloatingIcons();
-            
-            ctx.save();
-            ctx.globalAlpha = alpha;
-            ctx.font = '32px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            const rect = canvas.getBoundingClientRect();
-            
-            // Floating icons with water bobbing easing
-            floatingIcons.forEach(icon => {
-                icon.bobPhase += 0.02;
-                const bobY = Math.sin(icon.bobPhase) * 10;
-                const scrollY = scrollProgress * icon.scrollOffset;
-                
-                ctx.fillText(icon.icon, icon.x, icon.y + bobY + scrollY);
-            });
-            
-            // Ghost code scrolling vertically (slow parallax)
-            ctx.font = '12px "Courier New", monospace';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            const ghostCodeY = (time * 20 + scrollProgress * 200) % (rect.height + 100) - 50;
-            ctx.fillText('const code = "forever scrolling..."', rect.width / 2, ghostCodeY);
-            
-            ctx.restore();
-        }
-        
-        // Scroll: only store target (no work in scroll handler = no blocking)
-        window.addEventListener('scroll', () => {
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                const r = hero.getBoundingClientRect();
-                scrollProgressTarget = Math.max(0, Math.min(1, -r.top / (r.height * 0.8)));
-            }
-        }, { passive: true });
-        
-        // ========================================
-        // MAIN ANIMATION LOOP (single source of truth for time + scroll)
-        // ========================================
-        function animate() {
-            requestAnimationFrame(animate);
-            const dt = 0.016;
-            time += dt;
-            
-            // Smooth scroll progress (lerp) — eliminates jitter between Stage 2 and 3
-            scrollProgress += (scrollProgressTarget - scrollProgress) * SMOOTH;
-            const stageProgressRaw = scrollProgress * 5;
-            stage.current = Math.min(5, Math.max(1, Math.floor(stageProgressRaw) + 1));
-            stage.progress = stageProgressRaw % 1;
-            if (stage.progress !== stage.progress) stage.progress = 0; // NaN guard
-            
-            // Update typing animation
-            if (stage.current === 1) {
-                typingIndex = Math.min(terminalCode.length, Math.floor(time * 2));
-                cursorVisible = Math.sin(time * 3) > 0;
-            }
-            
-            // Clear canvas
-            const rect = canvas.getBoundingClientRect();
-            ctx.clearRect(0, 0, rect.width, rect.height);
-            
-            // Draw current stage
-            drawTerminal(ctx);
-            drawGlitchParticles(ctx);
-            drawNeuralNetwork(ctx);
-            drawMorphTransition(ctx);
-            drawParallaxFinal(ctx);
-            
-            lastStage = stage.current;
-        }
-        
-        animate();
-        
-        // Resize handler
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            // Reset positions on resize
-            networkNodes.length = 0;
-            logoPositions.length = 0;
-            floatingIcons.length = 0;
-        }, { passive: true });
+
     </script>
 </body>
 </html>

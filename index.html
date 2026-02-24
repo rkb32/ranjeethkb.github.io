@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranjeeth Burujula - Portfolio </title>
+    <title>Ranjeeth Burujula Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -814,11 +814,34 @@
 
         .project-image {
             width: 100%;
-            height: 350px;
+            height: 220px;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #0d1117;
         }
+
+        .code-preview {
+            width: 100%;
+            height: 100%;
+            background: #0d1117;
+            padding: 1.5rem;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .code-preview pre {
+            font-family: "Fira Code", "Courier New", monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            color: #c9d1d9;
+            white-space: pre;
+            margin: 0;
+        }
+
+        .code-preview .cs { color: #ff7b72; }
+        .code-preview .cstr { color: #a5d6ff; }
+        .code-preview .cnum { color: #79c0ff; }
+        .code-preview .ccom { color: #8b949e; }
 
         .project-image::after {
             content: '';
@@ -1366,6 +1389,26 @@
             margin-top: 2rem;
         }
 
+
+        .footer-content {
+            justify-content: space-between;
+        }
+
+        .footer-column-right {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .footer-social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            justify-content: flex-end;
+        }
+
+        .footer-social-link svg {
+            flex-shrink: 0;
+        }
         /* Footer */
         footer {
             background: var(--primary);
@@ -1537,51 +1580,110 @@
             .draggable-item:nth-child(3) { bottom: 20%; left: 30%; }
             }
 
-        /* Skills & Credentials */
-        .skills-grid {
-            max-width: 1000px;
-            margin: 3rem auto 2rem;
+        /* Skills Accordion */
+        .skills-accordion {
+            max-width: 900px;
+            margin: 2rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .skill-category {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--secondary);
+        }
+
+        .skill-cat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.1rem 1.5rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .skill-cat-header:hover {
+            background: var(--bg);
+        }
+
+        .skill-category.open .skill-cat-header {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+
+        .skill-cat-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .skill-cat-arrow {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .skill-category.open .skill-cat-arrow {
+            transform: rotate(180deg);
+        }
+
+        .skill-cat-body {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
-            justify-content: center;
+            gap: 0.6rem;
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+        }
+
+        .skill-category.open .skill-cat-body {
+            max-height: 300px;
+            padding: 1.2rem 1.5rem;
         }
 
         .skill-pill {
-            padding: 0.7rem 1.4rem;
-            background: var(--secondary);
-            border: 2px solid var(--border);
+            padding: 0.45rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
             border-radius: 100px;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             font-weight: 600;
-            cursor: default;
-            transition: all 0.3s ease;
-            position: relative;
-            user-select: none;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.2s ease, opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .skill-pill.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .skill-pill:hover {
             background: var(--primary);
             color: var(--secondary);
             border-color: var(--primary);
-            transform: translateY(-3px);
         }
 
-        .cert-tooltip {
-            max-width: 600px;
-            margin: 1rem auto 0;
-            text-align: center;
-            min-height: 2rem;
-            font-size: 0.95rem;
-            color: var(--accent);
-            font-weight: 600;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* Remove gap between skills and experience */
+        #projects {
+            padding-bottom: 3rem;
         }
 
-        .cert-tooltip.visible {
-            opacity: 1;
+        #skills {
+            padding-top: 3rem;
+            padding-bottom: 2rem;
         }
+
+        #experience {
+            padding-top: 2rem;
+        }
+
 
         /* Experience Section */
         .exp-grid {
@@ -1691,10 +1793,10 @@
 
     <!-- Navigation -->
     <nav id="nav">
-        <div class="logo">My Portfolio</div>
+        <div class="logo">Ranjeeth Burujula</div>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
-            <li><a href="#projects">Work</a></li>
+            <li><a href="#projects">Projects</a></li>
             <li><a href="#experience">Experience</a></li>
             <li><a href="#skills">Skills</a></li>
         </ul>
@@ -1710,10 +1812,12 @@
                 </div>
                 
                 <h1 class="hero-name">Ranjeeth Burujula</h1>
-                <p class="hero-role">AI & ML Engineer</p>
+                <p class="hero-role">Software Engineer</p>
                 
                 <p class="hero-bio">
-                    Passionate about building intelligent systems that solve real-world problems. With expertise in Computer Vision, NLP, and Full-Stack Development, I create scalable AI solutions that bridge cutting-edge research and practical applications.
+                    A work-in-progress engineer with good instincts and a long list of problems I'm excited to tackle.<br><br>
+                    I'm a Computer Science student at Manipal University aiming to grow into a solid software engineer by working on real systems and real problems—not just code that looks good on a slide. I like building things, occasionally breaking them, and figuring out how they actually work.<br><br>
+                    I'm happy jumping into different corners of tech—wherever there's something meaningful to build or fix. I learn fast, don't ghost when things get hard, and work well with people who care about what they're building. Messy technical problem on the table? Consider me curious.
                 </p>
                 
                 <div class="hero-social">
@@ -1776,7 +1880,10 @@
             <div class="projects-scroll-wrapper">
                 <div class="projects-horizontal">
                     <article class="project-card-horizontal" data-category="ai">
-                        <div class="project-image"></div>
+                        <div class="project-image"><div class="code-preview"><pre><span class="cs">from</span> transformers <span class="cs">import</span> BertTokenizer
+model = BertForSeq2Seq.from_pretrained(<span class="cstr">"bert-base"</span>)
+outputs = model.generate(input_ids, max_length=<span class="cnum">128</span>)
+bleu = corpus_bleu(refs, hyps) <span class="ccom"># ~85</span></pre></div></div>
                         <div class="project-content">
                             <div class="project-label">NLP • PyTorch • Hugging Face</div>
                             <h3 class="project-title">BERTlingo</h3>
@@ -1786,7 +1893,10 @@
                     </article>
 
                     <article class="project-card-horizontal" data-category="ai">
-                        <div class="project-image"></div>
+                        <div class="project-image"><div class="code-preview"><pre><span class="cs">@hydra</span>.main(config_path=<span class="cstr">"conf"</span>)
+<span class="cs">def</span> train(cfg):
+    model = GPT2LMHeadModel.from_pretrained(cfg.model)
+    trainer = Trainer(model, deepspeed=cfg.ds_config)</pre></div></div>
                         <div class="project-content">
                             <div class="project-label">LLM Training • PyTorch • DeepSpeed</div>
                             <h3 class="project-title">HF Pipeline</h3>
@@ -1796,7 +1906,10 @@
                     </article>
 
                     <article class="project-card-horizontal" data-category="cv">
-                        <div class="project-image"></div>
+                        <div class="project-image"><div class="code-preview"><pre>model = torchvision.models.resnet18(pretrained=<span class="cs">True</span>)
+model.fc = nn.Linear(<span class="cnum">512</span>, <span class="cnum">10</span>) <span class="ccom"># CIFAR-10</span>
+transforms.Normalize(mean=[<span class="cnum">0.485</span>], std=[<span class="cnum">0.229</span>])
+acc = evaluate(model, test_loader) <span class="ccom"># 94.2%</span></pre></div></div>
                         <div class="project-content">
                             <div class="project-label">Computer Vision • ResNet • CIFAR-10</div>
                             <h3 class="project-title">DeepVision</h3>
@@ -1806,7 +1919,11 @@
                     </article>
 
                     <article class="project-card-horizontal" data-category="web">
-                        <div class="project-image"></div>
+                        <div class="project-image"><div class="code-preview"><pre><span class="cs">func</span> GenerateAPI(schema *Schema) {
+    routes := ParseSchema(schema.Tables)
+    WriteHandlers(routes, <span class="cstr">"./output"</span>)
+    <span class="ccom">// Cuts dev time by ~70%</span>
+}</pre></div></div>
                         <div class="project-content">
                             <div class="project-label">Go • PostgreSQL • Code Generation</div>
                             <h3 class="project-title">GoInit</h3>
@@ -1816,7 +1933,10 @@
                     </article>
 
                     <article class="project-card-horizontal" data-category="web">
-                        <div class="project-image"></div>
+                        <div class="project-image"><div class="code-preview"><pre><span class="cs">const</span> api = <span class="cs">new</span> RestApi(<span class="cs">this</span>, <span class="cstr">"FileAPI"</span>)
+<span class="cs">const</span> fn = <span class="cs">new</span> Function(<span class="cs">this</span>, <span class="cstr">"Processor"</span>)
+bucket.grantReadWrite(fn)
+table.addGlobalSecondaryIndex(...)</pre></div></div>
                         <div class="project-content">
                             <div class="project-label">AWS • React • TypeScript • CDK</div>
                             <h3 class="project-title">CloudFileProcessor</h3>
@@ -1826,7 +1946,11 @@
                     </article>
 
                     <article class="project-card-horizontal" data-category="web">
-                        <div class="project-image"></div>
+                        <div class="project-image"><div class="code-preview"><pre>router.post(<span class="cstr">"/users"</span>, authenticate, async (req, res) => {
+  <span class="cs">const</span> user = <span class="cs">await</span> User.create(req.body)
+  <span class="cs">await</span> sendVerificationEmail(user.email)
+  res.json(generateJWT(user))
+})</pre></div></div>
                         <div class="project-content">
                             <div class="project-label">Node.js • Express • MongoDB • JWT</div>
                             <h3 class="project-title">NodeRestified</h3>
@@ -1840,37 +1964,133 @@
         </div>
     </section>
 
-    <!-- Tech Stack Section -->
-    <!-- Skills & Credentials Section -->
+    <!-- Skills Section -->
     <section class="section" id="skills">
         <div class="section-header">
             <div class="section-number">Skills & Credentials</div>
             <h2 class="section-title">What I Know</h2>
-            <p class="section-description">Hover a skill to see related certifications</p>
+            <p class="section-description">Click a category to explore</p>
         </div>
 
-        <div class="skills-grid" id="skillsGrid">
-            <div class="skill-pill" data-cert="Microsoft Azure AI Essentials — Microsoft & LinkedIn">AI/ML</div>
-            <div class="skill-pill" data-cert="HF Pipeline: GPT-2 & BERT training with PyTorch">PyTorch</div>
-            <div class="skill-pill" data-cert="BERTlingo: Transformer NLP project">Hugging Face</div>
-            <div class="skill-pill" data-cert="DeepVision: ResNet-18 image classification">Computer Vision</div>
-            <div class="skill-pill" data-cert="HackerRank Software Engineer Certificate">Python</div>
-            <div class="skill-pill" data-cert="CloudFileProcessor: AWS CDK, Lambda, S3, DynamoDB">AWS</div>
-            <div class="skill-pill" data-cert="Docker Foundations — Docker, Inc.">Docker</div>
-            <div class="skill-pill" data-cert="NodeRestified: REST API with JWT & MongoDB">Node.js</div>
-            <div class="skill-pill" data-cert="GoInit: Full-stack code generator">Go</div>
-            <div class="skill-pill" data-cert="HackerRank Frontend Engineer Certificate">React</div>
-            <div class="skill-pill" data-cert="CloudFileProcessor: TypeScript CDK infrastructure">TypeScript</div>
-            <div class="skill-pill" data-cert="NodeRestified: MongoDB persistence & queries">MongoDB</div>
-            <div class="skill-pill" data-cert="Spur: PostgreSQL query optimisation & indexing">PostgreSQL</div>
-            <div class="skill-pill" data-cert="Vector Databases — Weaviate">Vector DBs</div>
-            <div class="skill-pill" data-cert="DevOps Professional — PagerDuty & LinkedIn">DevOps</div>
-            <div class="skill-pill" data-cert="Spur: Redis caching for dashboard latency">Redis</div>
-            <div class="skill-pill" data-cert="Cred: Delta Lake deduplication in ETL pipeline">Data Engineering</div>
-            <div class="skill-pill" data-cert="Cred: Snowpipe pipeline validation & monitoring">Snowflake</div>
-        </div>
+        <div class="skills-accordion" id="skillsAccordion">
 
-        <div class="cert-tooltip" id="certTooltip"></div>
+            <div class="skill-category">
+                <div class="skill-cat-header">
+                    <span class="skill-cat-title">Languages</span>
+                    <span class="skill-cat-arrow">↓</span>
+                </div>
+                <div class="skill-cat-body">
+                    <div class="skill-pill">Python</div>
+                    <div class="skill-pill">JavaScript</div>
+                    <div class="skill-pill">TypeScript</div>
+                    <div class="skill-pill">Go</div>
+                    <div class="skill-pill">Java</div>
+                    <div class="skill-pill">C / C++</div>
+                    <div class="skill-pill">SQL</div>
+                    <div class="skill-pill">Bash</div>
+                    <div class="skill-pill">R</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-cat-header">
+                    <span class="skill-cat-title">AI & Machine Learning</span>
+                    <span class="skill-cat-arrow">↓</span>
+                </div>
+                <div class="skill-cat-body">
+                    <div class="skill-pill">PyTorch</div>
+                    <div class="skill-pill">TensorFlow</div>
+                    <div class="skill-pill">Hugging Face</div>
+                    <div class="skill-pill">scikit-learn</div>
+                    <div class="skill-pill">OpenCV</div>
+                    <div class="skill-pill">LangChain</div>
+                    <div class="skill-pill">RAG</div>
+                    <div class="skill-pill">Transformers</div>
+                    <div class="skill-pill">DeepSpeed</div>
+                    <div class="skill-pill">Weights & Biases</div>
+                    <div class="skill-pill">Hydra</div>
+                    <div class="skill-pill">MLflow</div>
+                    <div class="skill-pill">YOLO</div>
+                    <div class="skill-pill">Diffusers</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-cat-header">
+                    <span class="skill-cat-title">Frontend</span>
+                    <span class="skill-cat-arrow">↓</span>
+                </div>
+                <div class="skill-cat-body">
+                    <div class="skill-pill">React</div>
+                    <div class="skill-pill">Next.js</div>
+                    <div class="skill-pill">Vue.js</div>
+                    <div class="skill-pill">HTML5</div>
+                    <div class="skill-pill">CSS3</div>
+                    <div class="skill-pill">Tailwind CSS</div>
+                    <div class="skill-pill">Three.js</div>
+                    <div class="skill-pill">GSAP</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-cat-header">
+                    <span class="skill-cat-title">Backend</span>
+                    <span class="skill-cat-arrow">↓</span>
+                </div>
+                <div class="skill-cat-body">
+                    <div class="skill-pill">Node.js</div>
+                    <div class="skill-pill">Express.js</div>
+                    <div class="skill-pill">FastAPI</div>
+                    <div class="skill-pill">Flask</div>
+                    <div class="skill-pill">Django</div>
+                    <div class="skill-pill">REST APIs</div>
+                    <div class="skill-pill">GraphQL</div>
+                    <div class="skill-pill">JWT</div>
+                    <div class="skill-pill">OAuth 2.0</div>
+                    <div class="skill-pill">WebSockets</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-cat-header">
+                    <span class="skill-cat-title">Databases</span>
+                    <span class="skill-cat-arrow">↓</span>
+                </div>
+                <div class="skill-cat-body">
+                    <div class="skill-pill">PostgreSQL</div>
+                    <div class="skill-pill">MongoDB</div>
+                    <div class="skill-pill">Redis</div>
+                    <div class="skill-pill">MySQL</div>
+                    <div class="skill-pill">Snowflake</div>
+                    <div class="skill-pill">DynamoDB</div>
+                    <div class="skill-pill">Firebase</div>
+                    <div class="skill-pill">Vector DBs</div>
+                    <div class="skill-pill">Delta Lake</div>
+                    <div class="skill-pill">SQLite</div>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <div class="skill-cat-header">
+                    <span class="skill-cat-title">Cloud & DevOps</span>
+                    <span class="skill-cat-arrow">↓</span>
+                </div>
+                <div class="skill-cat-body">
+                    <div class="skill-pill">AWS</div>
+                    <div class="skill-pill">Docker</div>
+                    <div class="skill-pill">Kubernetes</div>
+                    <div class="skill-pill">CI/CD</div>
+                    <div class="skill-pill">GitHub Actions</div>
+                    <div class="skill-pill">Terraform</div>
+                    <div class="skill-pill">Linux</div>
+                    <div class="skill-pill">Snowpipe</div>
+                    <div class="skill-pill">ETL</div>
+                    <div class="skill-pill">Playwright</div>
+                    <div class="skill-pill">Jest</div>
+                </div>
+            </div>
+
+        </div>
     </section>
 
     <!-- Experience Section -->
@@ -1887,7 +2107,6 @@
                         <div class="exp-role">Software Engineering Intern</div>
                         <div class="exp-company">Spur — New York, NY</div>
                     </div>
-                    <div class="exp-date">Jan 2025 – Mar 2025</div>
                 </div>
                 <ul class="exp-bullets">
                     <li>Worked on the AI team to increase the speed of the observability platform, supporting 500+ agent test runs daily.</li>
@@ -1906,7 +2125,6 @@
                         <div class="exp-role">Data Engineering Intern</div>
                         <div class="exp-company">Cred — Remote, CA</div>
                     </div>
-                    <div class="exp-date">Jun 2025 – Aug 2025</div>
                 </div>
                 <ul class="exp-bullets">
                     <li>Worked on the Data Platform team to remove duplicate ad records from the ETL pipeline that were inflating campaign cost reports.</li>
@@ -1947,11 +2165,18 @@
                 <a href="#about">About</a>
                 <a href="#projects">Projects</a>
                 <a href="#skills">Skills</a>
+                <a href="#experience">Experience</a>
             </div>
-            <div class="footer-column">
+            <div class="footer-column footer-column-right">
                 <h3>Connect</h3>
-                <a href="https://github.com/rkb32" target="_blank">GitHub</a>
-                <a href="https://www.linkedin.com/in/ranjeeth-kb1341" target="_blank">LinkedIn</a>
+                <a href="https://github.com/rkb32" target="_blank" class="footer-social-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/ranjeeth-kb1341" target="_blank" class="footer-social-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                </a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -2126,17 +2351,26 @@
             });
         }
 
-        // Skills tooltip
-        const tooltip = document.getElementById('certTooltip');
-        document.querySelectorAll('.skill-pill').forEach(pill => {
-            pill.addEventListener('mouseenter', () => {
-                if (tooltip) {
-                    tooltip.textContent = '🎓 ' + pill.getAttribute('data-cert');
-                    tooltip.classList.add('visible');
+        // Skills accordion
+        document.querySelectorAll('.skill-cat-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const category = header.parentElement;
+                const isOpen = category.classList.contains('open');
+
+                // Close all
+                document.querySelectorAll('.skill-category').forEach(c => {
+                    c.classList.remove('open');
+                    c.querySelectorAll('.skill-pill').forEach(p => p.classList.remove('visible'));
+                });
+
+                // Open clicked if it was closed
+                if (!isOpen) {
+                    category.classList.add('open');
+                    const pills = category.querySelectorAll('.skill-pill');
+                    pills.forEach((pill, i) => {
+                        setTimeout(() => pill.classList.add('visible'), i * 40);
+                    });
                 }
-            });
-            pill.addEventListener('mouseleave', () => {
-                if (tooltip) tooltip.classList.remove('visible');
             });
         });
 
